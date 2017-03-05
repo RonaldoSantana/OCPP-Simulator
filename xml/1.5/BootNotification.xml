@@ -1,0 +1,18 @@
+<x:Envelope xmlns:x="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn://Ocpp/Cs/2012/06/">
+    <x:Header>
+        <ns:chargeBoxIdentity>?</ns:chargeBoxIdentity>
+    </x:Header>
+    <x:Body>
+        <ns:bootNotificationRequest>
+            <ns:chargePointVendor>?</ns:chargePointVendor>
+            <ns:chargePointModel>?</ns:chargePointModel>
+            <ns:chargePointSerialNumber>?</ns:chargePointSerialNumber>
+            <ns:chargeBoxSerialNumber>?</ns:chargeBoxSerialNumber>
+            <ns:firmwareVersion>?</ns:firmwareVersion>
+            <ns:iccid>?</ns:iccid>
+            <ns:imsi>?</ns:imsi>
+            <ns:meterType>?</ns:meterType>
+            <ns:meterSerialNumber>?</ns:meterSerialNumber>
+        </ns:bootNotificationRequest>
+    </x:Body>
+</x:Envelope>

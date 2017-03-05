@@ -1,0 +1,16 @@
+<x:Envelope xmlns:x="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn://Ocpp/Cs/2012/06/">
+    <x:Header>
+        <ns:chargeBoxIdentity>?</ns:chargeBoxIdentity>
+    </x:Header>
+    <x:Body>
+        <ns:statusNotificationRequest>
+            <ns:connectorId>0</ns:connectorId>
+            <ns:status>Available</ns:status>
+            <ns:errorCode>ConnectorLockFailure</ns:errorCode>
+            <ns:info>?</ns:info>
+            <ns:timestamp>2017-03-05T00:00:00</ns:timestamp>
+            <ns:vendorId>?</ns:vendorId>
+            <ns:vendorErrorCode>?</ns:vendorErrorCode>
+        </ns:statusNotificationRequest>
+    </x:Body>
+</x:Envelope>

@@ -1,0 +1,15 @@
+<x:Envelope xmlns:x="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn://Ocpp/Cs/2012/06/">
+    <x:Header>
+        <ns:chargeBoxIdentity>?</ns:chargeBoxIdentity>
+    </x:Header>
+    <x:Body>
+        <ns:meterValuesRequest>
+            <ns:connectorId>0</ns:connectorId>
+            <ns:transactionId>0</ns:transactionId>
+            <ns:values>
+                <ns:timestamp>2017-03-05T00:00:00</ns:timestamp>
+                <ns:value context="?" format="?" measurand="?" location="?" unit="?"/>
+            </ns:values>
+        </ns:meterValuesRequest>
+    </x:Body>
+</x:Envelope>

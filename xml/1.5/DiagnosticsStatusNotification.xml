@@ -1,0 +1,10 @@
+<x:Envelope xmlns:x="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn://Ocpp/Cs/2012/06/">
+    <x:Header>
+        <ns:chargeBoxIdentity>?</ns:chargeBoxIdentity>
+    </x:Header>
+    <x:Body>
+        <ns:diagnosticsStatusNotificationRequest>
+            <ns:status>Uploaded</ns:status>
+        </ns:diagnosticsStatusNotificationRequest>
+    </x:Body>
+</x:Envelope>
