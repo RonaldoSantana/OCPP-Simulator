@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"log"
+	"github.com/RonaldoSantana/ocpp-simulator/simulator"
 )
 
 // The URL of the SOAP server
@@ -132,7 +133,16 @@ func GetSoapEnvelope(query string, numero string, mdp string) (envelope *SoapEnv
 }
 
 func main() {
-	GetSoapEnvelope(test, "veefil-21159", "B4F62CEF")
+	var auth = simulator.Authorize{}
+
+	templateData := simulator.AuthTemplateData{
+		ChargeBoxID: "veefil-21159",
+		AuthID: "B4F62CEF",
+	}
+
+	fmt.Println(auth.ParseRequestBody(templateData))
+
+	//GetSoapEnvelope(test, "veefil-21159", "B4F62CEF")
 }
 
 /*

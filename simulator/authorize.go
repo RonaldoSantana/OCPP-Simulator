@@ -3,9 +3,8 @@ package simulator
 import (
 	"encoding/xml"
 	"io/ioutil"
-	"github.com/RonaldoSantana/ocpp-simulator/soap"
 	"text/template"
-	"os"
+	/*"os"*/
 	"log"
 	"bytes"
 	"fmt"
@@ -52,9 +51,7 @@ type Envelope struct {
 	Body   XMLBody
 }
 
-type Authorize struct {
-	Response Envelope
-}
+type Authorize struct {}
 
 // Defines structure to render XML for Authorize request
 type AuthTemplateData struct {
@@ -71,15 +68,13 @@ func (auth Authorize) ResponseStatus() string {
 }
 
 // Check if the authorize call to the central system has been accepted
+/*
 func (auth Authorize) Accepted() bool {
 	return auth.ResponseStatus() == statusAccepted
 }
+*/
 
-func init() {
-	Tpl = template.Must(template.ParseFiles("tpl.gohtml"))
-}
-
-func (auth Authorize) request() {
+/*func (auth Authorize) request() {
 
 	var buffer bytes.Buffer
 	tplData := AuthTemplateData{
@@ -98,15 +93,12 @@ func (auth Authorize) request() {
 		log.Fatalln(err)
 	}
 
-	/*soap := soap.Request{
+	*//*soap := soap.Request{
 		Url : "https://ocpp.ron.testcharge.net.nz",
-	}*/
-
-
+	}*//*
 
 	//soap.Call()
-
-}
+}*/
 
 func (auth Authorize) ParseResponseBody() {
 	response := Envelope{}
@@ -117,20 +109,29 @@ func (auth Authorize) ParseResponseBody() {
 	fmt.Println("Status:", response.Body.AuthorizeResponse.IdTagInfo.Status.Value)
 }
 
-func (auth Authorize) ParseRequestBody(requestData AuthTemplateData) {
+// parses the XML - adding values to parameters, etc.
+func (auth Authorize) ParseRequestBody(requestData AuthTemplateData) string {
 
 	var buffer bytes.Buffer
+	tpl := template.Must(template.ParseFiles(auth.Template()))
+
+	// template data
 	tplData := AuthTemplateData{
 		ChargeBoxID: requestData.ChargeBoxID,
 		AuthID: requestData.AuthID,
 	}
 
-	err := Tpl.ExecuteTemplate(buffer, auth.Template(), tplData)
+	fmt.Println("here");
+
+	err := tpl.Execute(&buffer, tplData)
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	return buffer.String()
 }
 
-func (auth Authorize) Template() {
+// Gets the XML to be used for this request
+func (auth Authorize) Template() string {
 	return "xml/Authorize.xml"
 }

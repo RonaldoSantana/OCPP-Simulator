@@ -1,24 +1,20 @@
 package simulator
 
 import (
-	"encoding/xml"
-	"text/template"
-	"bytes"
-	"os"
-	"log"
-	"github.com/RonaldoSantana/ocpp-simulator/soap"
+	/*"encoding/xml"*/
+	/*"text/template"*/
+	/*"bytes"
+	"log"*/
+	/*"github.com/RonaldoSantana/ocpp-simulator/soap"*/
 )
 
-// global package template variable
-var Tpl *template.Template
-
-const statusAccepted = "Accepted"
+/*const statusAccepted = "Accepted"
 const statusBlocked = "Blocked"
 const statusExpired = "Expired"
 const statusInvalid = "Invalid"
-const statusConcurrenTx = "ConcurrentTx"
+const statusConcurrenTx = "ConcurrentTx"*/
 
-// XML Body
+/*// XML Body
 type XMLBody struct {
 	XMLName	xml.Name `xml:"Body"`
 }
@@ -27,15 +23,15 @@ type XMLBody struct {
 type XMLEnvelope struct {
 	XMLName xml.Name `xml:"Envelope"`
 	XMLBody	XMLBody
-}
+}*/
 
 // empty interface so every request has it' own definition
 type RequestData interface {}
 
 // Interface that all charge point Request types needs to implement
 type ChargePoint interface {
-	ParseRequestBody() string // the request XML to be posted to central system
-	ParseResponseBody(requestData RequestData) interface{} // the parsed response, according to request
+	ParseRequestBody(requestData RequestData) string // the request XML to be posted to central system
+	ParseResponseBody() interface{} // the parsed response, according to request
 	Template() string // the parsed response, according to request
 }
 
@@ -45,7 +41,7 @@ type ChargePointRequest struct {
 
 func request(requestMethod ChargePoint) {
 
-	var buffer bytes.Buffer
+	/*var buffer bytes.Buffer
 	tplData := AuthTemplateData{
 		ChargeBoxID: "veefil-21159",
 		AuthID: "B4F62CEF",
@@ -54,12 +50,12 @@ func request(requestMethod ChargePoint) {
 	err := Tpl.ExecuteTemplate(buffer, requestMethod.Template(), tplData)
 	if err != nil {
 		log.Fatalln(err)
-	}
+	}*/
 
-	soap := soap.Request{
+	/*soap := soap.Request{
 		Url : "https://ocpp.ron.testcharge.net.nz",
 	}
-
+*/
 
 
 	//soap.Call()
@@ -99,10 +95,5 @@ type ChargePointInterface interface {
 	HandleSendLocalList()
 	HandleUnlockConnector()
 	HandleUpdateFirmware()
-
-}
-
-
-type ChargePoint struct {
 
 }
