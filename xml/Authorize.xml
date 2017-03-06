@@ -13,3 +13,15 @@
         </ns:authorizeRequest>
     </x:Body>
 </x:Envelope>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="urn://Ocpp/Cs/2012/06/">
+    <SOAP-ENV:Body>
+        <ns1:authorizeResponse>
+            <ns1:idTagInfo>
+                <ns1:status>Accepted</ns1:status>
+            </ns1:idTagInfo>
+        </ns1:authorizeResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

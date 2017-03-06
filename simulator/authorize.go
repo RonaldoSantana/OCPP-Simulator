@@ -8,19 +8,12 @@ import (
 	"os"
 	"log"
 	"bytes"
+	"fmt"
 )
 
 // TODO: create an interface that declares the method to parse the response and the request body
 // TODO: create a base class that implements the parse of the request body and the parse of the template with a base struct type?
 // TODO: the method that makes the call on request.go receives the interface
-
-const statusAccepted = "Accepted"
-const statusBlocked = "Blocked"
-const statusExpired = "Expired"
-const statusInvalid = "Invalid"
-const statusConcurrenTx = "ConcurrentTx"
-
-var tpl *template.Template
 
 type XMLParentIdTag struct {
 	XMLName xml.Name `xml:"parentIdTag"`
@@ -83,29 +76,61 @@ func (auth Authorize) Accepted() bool {
 }
 
 func init() {
-	tpl = template.Must(template.ParseFiles("tpl.gohtml"))
+	Tpl = template.Must(template.ParseFiles("tpl.gohtml"))
 }
 
 func (auth Authorize) request() {
 
 	var buffer bytes.Buffer
+	tplData := AuthTemplateData{
+		ChargeBoxID: "veefil-21159",
+		AuthID: "B4F62CEF",
+	}
+
 	file, err := os.Open("xml/1.5/Authorize.xml")
 	if err != nil {
 		log.Fatalln(err)
 	}
 	buffer.ReadFrom(file)
 
-	err = tpl.Execute(buffer, buddha)
+	err = Tpl.ExecuteTemplate(buffer, "xml/1.5/Authorize.xml", tplData)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	soap := soap.Request{
+	/*soap := soap.Request{
 		Url : "https://ocpp.ron.testcharge.net.nz",
+	}*/
+
+
+
+	//soap.Call()
+
+}
+
+func (auth Authorize) ParseResponseBody() {
+	response := Envelope{}
+	xmlContent, _ := ioutil.ReadFile("example.xml")
+	err := xml.Unmarshal(xmlContent, &response)
+	if err != nil { panic(err) }
+	fmt.Println("XMLName:", response.XMLName)
+	fmt.Println("Status:", response.Body.AuthorizeResponse.IdTagInfo.Status.Value)
+}
+
+func (auth Authorize) ParseRequestBody(requestData AuthTemplateData) {
+
+	var buffer bytes.Buffer
+	tplData := AuthTemplateData{
+		ChargeBoxID: requestData.ChargeBoxID,
+		AuthID: requestData.AuthID,
 	}
 
+	err := Tpl.ExecuteTemplate(buffer, auth.Template(), tplData)
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
 
-
-	soap.Call()
-
+func (auth Authorize) Template() {
+	return "xml/Authorize.xml"
 }
