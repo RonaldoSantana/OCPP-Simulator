@@ -2,9 +2,7 @@ package simulator
 
 import (
 	"encoding/xml"
-	"io/ioutil"
 	"text/template"
-	/*"os"*/
 	"log"
 	"bytes"
 	"fmt"
@@ -51,7 +49,9 @@ type Envelope struct {
 	Body   XMLBody
 }
 
-type Authorize struct {}
+type Authorize struct {
+	Response *Envelope
+}
 
 // Defines structure to render XML for Authorize request
 type AuthTemplateData struct {
@@ -59,66 +59,18 @@ type AuthTemplateData struct {
 	AuthID string
 }
 
-func (auth Authorize) ResponseStatus() string {
-	d := Envelope{}
-	xmlContent, _ := ioutil.ReadFile("example.xml")
-	err := xml.Unmarshal(xmlContent, &d)
-	if err != nil { panic(err) }
-	return d.Body.AuthorizeResponse.IdTagInfo.Status.Value
-}
-
-// Check if the authorize call to the central system has been accepted
-/*
-func (auth Authorize) Accepted() bool {
-	return auth.ResponseStatus() == statusAccepted
-}
-*/
-
-/*func (auth Authorize) request() {
-
-	var buffer bytes.Buffer
-	tplData := AuthTemplateData{
-		ChargeBoxID: "veefil-21159",
-		AuthID: "B4F62CEF",
-	}
-
-	file, err := os.Open("xml/1.5/Authorize.xml")
-	if err != nil {
-		log.Fatalln(err)
-	}
-	buffer.ReadFrom(file)
-
-	err = Tpl.ExecuteTemplate(buffer, "xml/1.5/Authorize.xml", tplData)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	*//*soap := soap.Request{
-		Url : "https://ocpp.ron.testcharge.net.nz",
-	}*//*
-
-	//soap.Call()
-}*/
-
-func (auth Authorize) ParseResponseBody() {
-	response := Envelope{}
-	xmlContent, _ := ioutil.ReadFile("example.xml")
-	err := xml.Unmarshal(xmlContent, &response)
-	if err != nil { panic(err) }
-	fmt.Println("XMLName:", response.XMLName)
-	fmt.Println("Status:", response.Body.AuthorizeResponse.IdTagInfo.Status.Value)
-}
-
 // parses the XML - adding values to parameters, etc.
-func (auth Authorize) ParseRequestBody(requestData AuthTemplateData) string {
+func (auth *Authorize) ParseRequestBody(data []string) string {
+
+	// TODO: validate number of arguments
 
 	var buffer bytes.Buffer
 	tpl := template.Must(template.ParseFiles(auth.Template()))
 
 	// template data
 	tplData := AuthTemplateData{
-		ChargeBoxID: requestData.ChargeBoxID,
-		AuthID: requestData.AuthID,
+		ChargeBoxID: data[1],
+		AuthID: data[2],
 	}
 
 	fmt.Println("here");
@@ -131,7 +83,37 @@ func (auth Authorize) ParseRequestBody(requestData AuthTemplateData) string {
 	return buffer.String()
 }
 
+// Parse response
+func (auth *Authorize) ParseResponseBody(responseData []byte) {
+	err := xml.Unmarshal(responseData, &auth.Response)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	//auth.Response = *response;
+}
+
 // Gets the XML to be used for this request
-func (auth Authorize) Template() string {
+func (auth *Authorize) Template() string {
 	return "xml/Authorize.xml"
+}
+
+// Gets the response status for the Authorize request
+func (auth *Authorize) ResponseStatus() string {
+	return auth.Response.Body.AuthorizeResponse.IdTagInfo.Status.Value
+}
+
+// Check if the authorize call to the central system has been accepted
+func (auth *Authorize) Accepted() bool {
+	return auth.ResponseStatus() == StatusAccepted
+}
+
+
+// Gets the response status for the Authorize request
+func (auth *Authorize) ValidateArguments(data []string) {
+	// TODO
+}
+
+func NewAuthorize() *Authorize {
+	return &Authorize{}
 }

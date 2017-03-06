@@ -132,17 +132,45 @@ func GetSoapEnvelope(query string, numero string, mdp string) (envelope *SoapEnv
 	return
 }
 
-func main() {
-	var auth = simulator.Authorize{}
+func soapCall(request simulator.ChargePoint) {
 
-	templateData := simulator.AuthTemplateData{
-		ChargeBoxID: "veefil-21159",
-		AuthID: "B4F62CEF",
+	// TODO: this will be the command line arguments
+	args := []string {
+		"Authorize",
+		"veefil-21159",
+		"B4F62CEF",
 	}
+	soapRequestContent := request.ParseRequestBody(args);
 
-	fmt.Println(auth.ParseRequestBody(templateData))
+	httpClient := new(http.Client)
+	// make request to central system
+	response, err := httpClient.Post(MH_SOAP_URL, "text/xml; charset=utf-8", bytes.NewBufferString(soapRequestContent))
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer response.Body.Close()
 
-	//GetSoapEnvelope(test, "veefil-21159", "B4F62CEF")
+	responseBody, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	request.ParseResponseBody(responseBody)
+}
+
+func main() {
+	var request simulator.ChargePoint
+	method := "Authorize"
+
+	switch ( method ) {
+	case "Authorize" :
+		request = simulator.NewAuthorize()
+	default:
+		// TODO: invalid request, stop everything
+		request = simulator.NewAuthorize()
+	}
+	soapCall(request)
+
+	fmt.Println(request.ResponseStatus())
 }
 
 /*

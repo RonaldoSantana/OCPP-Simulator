@@ -8,11 +8,11 @@ import (
 	/*"github.com/RonaldoSantana/ocpp-simulator/soap"*/
 )
 
-/*const statusAccepted = "Accepted"
-const statusBlocked = "Blocked"
-const statusExpired = "Expired"
-const statusInvalid = "Invalid"
-const statusConcurrenTx = "ConcurrentTx"*/
+const StatusAccepted = "Accepted"
+const StatusBlocked = "Blocked"
+const StatusExpired = "Expired"
+const StatusInvalid = "Invalid"
+const StatusConcurrenTx = "ConcurrentTx"
 
 /*// XML Body
 type XMLBody struct {
@@ -26,17 +26,12 @@ type XMLEnvelope struct {
 }*/
 
 // empty interface so every request has it' own definition
-type RequestData interface {}
 
 // Interface that all charge point Request types needs to implement
 type ChargePoint interface {
-	ParseRequestBody(requestData RequestData) string // the request XML to be posted to central system
-	ParseResponseBody() interface{} // the parsed response, according to request
-	Template() string // the parsed response, according to request
-}
-
-type ChargePointRequest struct {
-	Template string // the request XML to be posted to central system
+	ParseRequestBody(data []string) string // the request XML to be posted to central system
+	ParseResponseBody(responseData []byte) // the parsed response, according to request
+	ResponseStatus() string
 }
 
 func request(requestMethod ChargePoint) {
