@@ -12,51 +12,23 @@ import (
 // TODO: create a base class that implements the parse of the request body and the parse of the template with a base struct type?
 // TODO: the method that makes the call on request.go receives the interface
 
-type XMLParentIdTag struct {
-	XMLName xml.Name `xml:"parentIdTag"`
-	Value string `xml:",chardata"`
-}
-
-type XMLExpiryDate struct {
-	XMLName xml.Name `xml:"expiryDate"`
-	Value string `xml:",chardata"`
-}
-
-type XMLStatus struct {
-	XMLName xml.Name `xml:"status"`
-	Value string `xml:",chardata"`
-}
-
-type XMLIdTagInfo struct {
-	XMLName xml.Name `xml:"idTagInfo"`
-	Status XMLStatus
-	ExpiryDate XMLExpiryDate
-	ParentIdTag XMLParentIdTag
-}
-
 type XMLAuthorizeResponse struct {
 	XMLName xml.Name  `xml:"authorizeResponse"`
 	IdTagInfo XMLIdTagInfo
 }
 
-type XMLBody struct {
+type XMLAuthorizeBody struct {
 	XMLName  xml.Name `xml:"Body"`
 	AuthorizeResponse XMLAuthorizeResponse
 }
 
-type Envelope struct {
+type EnvelopeAuthorize struct {
 	XMLName  xml.Name    `xml:"Envelope"`
-	Body   XMLBody
+	Body   XMLAuthorizeBody
 }
 
 type Authorize struct {
-	Response *Envelope
-}
-
-// Defines structure to render XML for Authorize request
-type AuthTemplateData struct {
-	ChargeBoxID string
-	AuthID string
+	Response *EnvelopeAuthorize
 }
 
 // parses the XML - adding values to parameters, etc.
@@ -68,12 +40,10 @@ func (auth *Authorize) ParseRequestBody(data []string) string {
 	tpl := template.Must(template.ParseFiles(auth.Template()))
 
 	// template data
-	tplData := AuthTemplateData{
+	tplData := RequestData{
 		ChargeBoxID: data[1],
 		AuthID: data[2],
 	}
-
-	fmt.Println("here");
 
 	err := tpl.Execute(&buffer, tplData)
 	if err != nil {

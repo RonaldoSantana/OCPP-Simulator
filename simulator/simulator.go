@@ -1,7 +1,7 @@
 package simulator
 
 import (
-	/*"encoding/xml"*/
+	"encoding/xml"
 	/*"text/template"*/
 	/*"bytes"
 	"log"*/
@@ -13,6 +13,12 @@ const StatusBlocked = "Blocked"
 const StatusExpired = "Expired"
 const StatusInvalid = "Invalid"
 const StatusConcurrenTx = "ConcurrentTx"
+
+// Basic request parameters
+type RequestData struct {
+	ChargeBoxID string
+	AuthID string
+}
 
 /*// XML Body
 type XMLBody struct {

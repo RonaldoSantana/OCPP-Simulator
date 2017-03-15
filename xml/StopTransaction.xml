@@ -1,12 +1,13 @@
 <x:Envelope xmlns:x="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn://Ocpp/Cs/2012/06/">
     <x:Header>
-        <ns:chargeBoxIdentity>?</ns:chargeBoxIdentity>
+        <ns:chargeBoxIdentity>{{.ChargeBoxID}}</ns:chargeBoxIdentity>
+        <wsa5:Action>/StopTransaction</wsa5:Action>
     </x:Header>
     <x:Body>
         <ns:stopTransactionRequest>
-            <ns:transactionId>0</ns:transactionId>
-            <ns:idTag>?</ns:idTag>
-            <ns:timestamp>2017-03-05T00:00:00</ns:timestamp>
+            <ns:transactionId>{{.TransactionID}}</ns:transactionId>
+            <ns:idTag>{{.AuthID}}</ns:idTag>
+            <ns:timestamp>{{.DateTimeStop}}</ns:timestamp>
             <ns:meterStop>0</ns:meterStop>
             <ns:transactionData>
                 <ns:values>
