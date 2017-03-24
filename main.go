@@ -4,17 +4,18 @@ import (
 	"fmt"
 	"github.com/RonaldoSantana/ocpp-simulator/charger"
 	//"os"
-	"os"
 )
 
 func main() {
 	method := "Authorize"
-	args := []string{"Authorize"}
-
-	if false {
-		simulator := charger.Simulator{}
-		response := simulator.Call(method, args) //os.Args...)
-
-		fmt.Println(response)
+	args := []string{
+		"veefil-21159",
+		"B4F62CEF",
 	}
+
+	simulator := charger.Simulator{}
+	response := simulator.Call(method, args...) //os.Args...)
+
+	fmt.Println(response)
+
 }

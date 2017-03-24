@@ -49,8 +49,8 @@ func (auth *StartTransaction) ParseRequestBody(data []string) string {
 	// template data
 	tplData := StartTransactionData{
 		RequestData{
+			data[0],
 			data[1],
-			data[2],
 		},
 		t1.Format(time.RFC3339),
 	}

@@ -50,8 +50,8 @@ func (auth *StopTransaction) ParseRequestBody(data []string) string {
 	// template data
 	tplData := StopTransactionData{
 		RequestData{
+			data[0],
 			data[1],
-			data[2],
 		},
 		123,
 		t1.Format(time.RFC3339),

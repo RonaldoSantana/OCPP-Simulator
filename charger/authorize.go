@@ -40,8 +40,8 @@ func (auth *Authorize) ParseRequestBody(data []string) string {
 
 	// template data
 	tplData := RequestData{
-		ChargeBoxID: data[1],
-		AuthID: data[2],
+		ChargeBoxID: data[0],
+		AuthID: data[1],
 	}
 
 	err := tpl.Execute(&buffer, tplData)
