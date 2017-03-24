@@ -9,12 +9,6 @@
             <ns:idTag>{{.AuthID}}</ns:idTag>
             <ns:timestamp>{{.DateTimeStop}}</ns:timestamp>
             <ns:meterStop>0</ns:meterStop>
-            <ns:transactionData>
-                <ns:values>
-                    <ns:timestamp>2017-03-05T00:00:00</ns:timestamp>
-                    <ns:value context="?" format="?" measurand="?" location="?" unit="?"/>
-                </ns:values>
-            </ns:transactionData>
         </ns:stopTransactionRequest>
     </x:Body>
 </x:Envelope>
