@@ -5,11 +5,8 @@ import (
 	"bytes"
 	"log"
 	"io/ioutil"
+	"encoding/json"
 )
-
-// CentralSystemURL is the URL of the SOAP server
-const CentralSystemURL = "https://ocpp.ron.testcharge.net.nz"
-
 
 type ChargePointInterface interface {
 	// Methods Initiated by the charge point
@@ -49,6 +46,22 @@ type ChargePointInterface interface {
 
 type Simulator struct {
 	Method ChargePointMethod
+	config Config
+}
+
+type Config struct {
+	CentralSystemUrl string
+}
+
+var config *Config
+
+func init() {
+	file, e := ioutil.ReadFile("./config/env.json")
+	if e != nil {
+		log.Fatalf("File error: %v\n", e)
+	}
+
+	json.Unmarshal(file, &config)
 }
 
 func (simulator *Simulator) Call(method string, args ...string) string {
@@ -61,7 +74,7 @@ func (simulator *Simulator) Call(method string, args ...string) string {
 	case "StopTransaction":
 		simulator.Method = NewStopTransaction()
 	default:
-		log.Fatalf("Invalid method %v called", method )
+		log.Fatalf(`Invalid method "%v" called`, method )
 	}
 
 	simulator.soapCall(args)
@@ -76,7 +89,7 @@ func (simulator *Simulator) soapCall(args []string) {
 	httpClient := new(http.Client)
 
 	// make request to central system
-	response, err := httpClient.Post(CentralSystemURL, "text/xml; charset=utf-8", bytes.NewBufferString(soapRequestContent))
+	response, err := httpClient.Post(config.CentralSystemUrl, "text/xml; charset=utf-8", bytes.NewBufferString(soapRequestContent))
 	if err != nil {
 		log.Fatalln(err)
 	}

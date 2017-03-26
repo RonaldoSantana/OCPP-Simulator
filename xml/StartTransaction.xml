@@ -1,6 +1,7 @@
 <x:Envelope xmlns:x="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn://Ocpp/Cs/2012/06/">
     <x:Header>
         <ns:chargeBoxIdentity>{{.ChargeBoxID}}</ns:chargeBoxIdentity>
+        <ns:MessageID>{{.MessageID}}</ns:MessageID>
         <wsa5:Action>/StartTransaction</wsa5:Action>
     </x:Header>
     <x:Body>

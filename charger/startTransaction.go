@@ -5,8 +5,8 @@ import (
 	"text/template"
 	"log"
 	"bytes"
-	"fmt"
 	"time"
+	"github.com/satori/go.uuid"
 )
 
 type XMLStartTransactionResponse struct {
@@ -28,6 +28,7 @@ type EnvelopeStartTransaction struct {
 // Defines structure to render XML for Authorize request
 type StartTransactionData struct {
 	RequestData
+	MessageID string
 	DateTimeStart string
 }
 
@@ -52,10 +53,9 @@ func (auth *StartTransaction) ParseRequestBody(data []string) string {
 			data[0],
 			data[1],
 		},
+		uuid.NewV4().String(),
 		t1.Format(time.RFC3339),
 	}
-
-	fmt.Println("here");
 
 	err := tpl.Execute(&buffer, tplData)
 	if err != nil {
@@ -82,7 +82,7 @@ func (auth *StartTransaction) Template() string {
 
 // Gets the response status for the Authorize request
 func (auth *StartTransaction) ResponseStatus() string {
-	return auth.Response.Body.StartTransactionResponse.IdTagInfo.Status.Value
+	return auth.Response.Body.StartTransactionResponse.IdTagInfo.Status.Value + " : TransactionID: " + auth.Response.Body.StartTransactionResponse.TransactionId.Value
 }
 
 // Check if the authorize call to the central system has been accepted

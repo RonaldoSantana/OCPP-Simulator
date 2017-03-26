@@ -1,10 +1,10 @@
 package charger
 
 import (
-	"encoding/xml"
-	"text/template"
-	"log"
 	"bytes"
+	"encoding/xml"
+	"log"
+	"text/template"
 )
 
 // TODO: create an interface that declares the method to parse the response and the request body
@@ -12,18 +12,18 @@ import (
 // TODO: the method that makes the call on request.go receives the interface
 
 type XMLAuthorizeResponse struct {
-	XMLName xml.Name  `xml:"authorizeResponse"`
+	XMLName   xml.Name `xml:"authorizeResponse"`
 	IdTagInfo XMLIdTagInfo
 }
 
 type XMLAuthorizeBody struct {
-	XMLName  xml.Name `xml:"Body"`
+	XMLName           xml.Name `xml:"Body"`
 	AuthorizeResponse XMLAuthorizeResponse
 }
 
 type EnvelopeAuthorize struct {
-	XMLName  xml.Name    `xml:"Envelope"`
-	Body   XMLAuthorizeBody
+	XMLName xml.Name `xml:"Envelope"`
+	Body    XMLAuthorizeBody
 }
 
 type Authorize struct {
@@ -41,7 +41,7 @@ func (auth *Authorize) ParseRequestBody(data []string) string {
 	// template data
 	tplData := RequestData{
 		ChargeBoxID: data[0],
-		AuthID: data[1],
+		AuthID:      data[1],
 	}
 
 	err := tpl.Execute(&buffer, tplData)
@@ -76,7 +76,6 @@ func (auth *Authorize) ResponseStatus() string {
 func (auth *Authorize) Accepted() bool {
 	return auth.ResponseStatus() == StatusAccepted
 }
-
 
 // Gets the response status for the Authorize request
 func (auth *Authorize) ValidateArguments(data []string) {

@@ -4,18 +4,16 @@ import (
 	"fmt"
 	"github.com/RonaldoSantana/ocpp-simulator/charger"
 	//"os"
+	"os"
 )
 
-func main() {
-	method := "Authorize"
-	args := []string{
-		"veefil-21159",
-		"B4F62CEF",
-	}
 
+
+func main() {
+
+	method := os.Args[1]
 	simulator := charger.Simulator{}
-	response := simulator.Call(method, args...) //os.Args...)
+	response := simulator.Call(method, os.Args[2:]...) //os.Args...)
 
 	fmt.Println(response)
-
 }

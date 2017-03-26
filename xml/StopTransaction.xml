@@ -8,7 +8,7 @@
             <ns:transactionId>{{.TransactionID}}</ns:transactionId>
             <ns:idTag>{{.AuthID}}</ns:idTag>
             <ns:timestamp>{{.DateTimeStop}}</ns:timestamp>
-            <ns:meterStop>0</ns:meterStop>
+            <ns:meterStop>1234</ns:meterStop>
         </ns:stopTransactionRequest>
     </x:Body>
 </x:Envelope>

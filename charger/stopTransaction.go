@@ -27,7 +27,7 @@ type EnvelopeStopTransaction struct {
 // TODO: we we need an array for TransactionData - see XML and docs
 type StopTransactionData struct {
 	RequestData
-	TransactionId int
+	TransactionID string
 	DateTimeStop string
 	MeterStop int
 }
@@ -53,7 +53,7 @@ func (auth *StopTransaction) ParseRequestBody(data []string) string {
 			data[0],
 			data[1],
 		},
-		123,
+		data[2],
 		t1.Format(time.RFC3339),
 		1500,
 	}
@@ -72,8 +72,6 @@ func (auth *StopTransaction) ParseResponseBody(responseData []byte) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
-	//simulator.Response = *response;
 }
 
 // Gets the XML to be used for this request
